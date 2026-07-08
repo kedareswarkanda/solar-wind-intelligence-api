@@ -8,39 +8,61 @@ This project fulfills the requirements of the **Infosys Springboard Virtual Inte
 *   Task 1 - Successfully run FastAPI locally.
 *   Task 2 - Create GET /about and GET /health endpoints.
 
-## 3. Features
-*   FastAPI backend setup
+## 3. Day 2 - Modular Router Architecture
+As part of the Day 2 assignment, the application has been refactored into a modular design:
+*   The root endpoint (`GET /`) was refactored and moved from `main.py` to a dedicated home router: `app/api/home.py`.
+*   Feature routers were created for projects (`app/api/projects.py`), sites (`app/api/sites.py`), and predictions (`app/api/predictions.py`).
+*   All four routers were registered with the FastAPI application using `app.include_router()`.
+*   `GET /projects` was implemented to return a hardcoded list of available renewable energy projects.
+*   `GET /sites` was implemented to return hardcoded renewable energy site coordinates.
+*   The predictions router (`app/api/predictions.py`) was registered with the app but remains empty, ready to receive future prediction logic.
+
+## 4. Features
+*   FastAPI backend setup with modular router architecture
 *   Local Uvicorn server
-*   GET / endpoint
-*   GET /health endpoint
-*   GET /about endpoint
+*   `GET /` endpoint (Home route)
+*   `GET /projects` endpoint (Renewable projects list)
+*   `GET /sites` endpoint (Renewable site coordinates)
+*   `GET /health` endpoint (Operational status)
+*   `GET /about` endpoint (Project information)
 *   JSON API responses
 *   Swagger UI documentation
 
-## 4. Technologies Used
+## 5. Technologies Used
 *   **Python**: Programming language used for development.
 *   **FastAPI**: A modern, fast (high-performance), web framework for building APIs.
 *   **Uvicorn**: A lightning-fast ASGI server implementation, used to run the FastAPI application.
 *   **Swagger UI**: Automatically generated interactive API documentation.
 
-## 5. Project Structure
+## 6. Project Structure
 The repository contains the following clean, professional project structure:
 ```text
 solar-wind-intelligence-api/
+│
 ├── main.py
+│
+├── app/
+│   ├── __init__.py
+│   └── api/
+│       ├── __init__.py
+│       ├── home.py
+│       ├── projects.py
+│       ├── sites.py
+│       └── predictions.py
+│
 ├── requirements.txt
 ├── README.md
 └── .gitignore
 ```
 *Note: The virtual environment (`venv/`) is kept locally and ignored from the Git repository using `.gitignore`.*
 
-## 6. Prerequisites
+## 7. Prerequisites
 To run this application, make sure you have the following installed on your system:
 *   **Python 3.8+** (Ensure Python is added to your system's PATH variable)
 *   **pip** (Python package installer, which comes bundled with Python)
 *   **VS Code** (Recommended IDE for a smooth development experience)
 
-## 7. Installation
+## 8. Installation
 Follow these Windows-friendly commands to set up the project on your local system:
 
 ### Step 1: Clone and Navigate to the Project Folder
@@ -65,7 +87,6 @@ Activate the environment to isolate the project's dependencies:
     ```powershell
     .\venv\Scripts\Activate.ps1
     ```
-    *(Note: If you get a script execution policy error, run `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process` first, then run the activation script again).*
 *   **For Windows Command Prompt:**
     ```cmd
     venv\Scripts\activate
@@ -77,7 +98,7 @@ Install all the required Python packages:
 pip install -r requirements.txt
 ```
 
-## 8. Running the Application
+## 9. Running the Application
 Start the Uvicorn ASGI development server using the command below:
 ```bash
 uvicorn main:app --reload
@@ -89,16 +110,16 @@ uvicorn main:app --reload
 *   `app`: The FastAPI application object initialized inside `main.py` (`app = FastAPI(...)`).
 *   `--reload`: Automatically reloads the server whenever you save changes to your code.
 
-## 9. Local Server URL
+## 10. Local Server URL
 Once started, the local development server will be running at:
 *   **Local Server Address:** [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
-## 10. Swagger UI
+## 11. Swagger UI
 FastAPI automatically generates interactive Swagger UI documentation at:
 *   **Swagger UI Address:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
-## 11. API Endpoints
-The platform exposes three basic GET endpoints:
+## 12. API Endpoints
+The platform exposes the following GET endpoints:
 
 ### 1. Welcome Endpoint
 *   **Route:** `GET /`
@@ -109,7 +130,33 @@ The platform exposes three basic GET endpoints:
     }
     ```
 
-### 2. Health Check Endpoint
+### 2. Projects Endpoint
+*   **Route:** `GET /projects`
+*   **Expected Response:**
+    ```json
+    [
+      {
+        "id": 1,
+        "project_name": "Demo Solar Project",
+        "location": "Odisha"
+      }
+    ]
+    ```
+
+### 3. Sites Endpoint
+*   **Route:** `GET /sites`
+*   **Expected Response:**
+    ```json
+    [
+      {
+        "id": 1,
+        "latitude": 19.8135,
+        "longitude": 85.8312
+      }
+    ]
+    ```
+
+### 4. Health Check Endpoint
 *   **Route:** `GET /health`
 *   **Expected Response:**
     ```json
@@ -118,7 +165,7 @@ The platform exposes three basic GET endpoints:
     }
     ```
 
-### 3. About Endpoint
+### 5. About Endpoint
 *   **Route:** `GET /about`
 *   **Expected Response:**
     ```json
@@ -127,33 +174,20 @@ The platform exposes three basic GET endpoints:
     }
     ```
 
-## 12. Swagger API Documentation
+## 13. Swagger API Documentation
 How to test using Swagger UI:
 1. Open [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) in your web browser.
-2. Select any endpoint (e.g., `GET /health` or `GET /about`) to expand it.
+2. Select any endpoint (e.g., `GET /projects` or `GET /sites`) to expand it.
 3. Click the **Try it out** button in the top-right of the endpoint section.
 4. Click the blue **Execute** button.
 5. Scroll down to review the **Response body** showing the JSON output and verify the **Response headers** show a `200` status code.
 
-## 13. API Testing
-You can manually verify the API endpoints directly in your browser or through tools like Postman:
-*   Accessing [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health) should display:
-    ```json
-    {"status": "Running"}
-    ```
-*   Accessing [http://127.0.0.1:8000/about](http://127.0.0.1:8000/about) should display:
-    ```json
-    {"project": "Solar & Wind Deployment Intelligence Platform"}
-    ```
+## 14. API Testing
+You can manually verify the API endpoints directly in your browser:
+*   Accessing [http://127.0.0.1:8000/projects](http://127.0.0.1:8000/projects) should display the hardcoded list of projects.
+*   Accessing [http://127.0.0.1:8000/sites](http://127.0.0.1:8000/sites) should display the coordinates.
+*   Accessing [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health) should display `{"status": "Running"}`.
+*   Accessing [http://127.0.0.1:8000/about](http://127.0.0.1:8000/about) should display the project name.
 
-## 14. Assignment Result
-The FastAPI web server has been successfully configured, installed, and executed on the local environment. Both mandatory GET endpoints (`/health` and `/about`) along with the optional root endpoint (`/`) were successfully implemented, yielding the exact JSON responses and HTTP status codes (200 OK) required by the assignment guidelines.
-
-## 15. Conclusion
-Through this internship assignment, key learning outcomes were successfully demonstrated:
-1. Setting up a local development environment with virtual environments in Windows.
-2. Initializing a FastAPI application with custom title, version, and description metadata.
-3. Defining REST API GET route decorators and mapping them to Python handler functions.
-4. Structuring clean JSON dictionary responses in Python that FastAPI handles automatically.
-5. Deploying and running Uvicorn as a local web server with auto-reload capabilities.
-6. Testing and verifying REST APIs using the automatic interactive Swagger UI documentation.
+## 15. Assignment Result
+The modular router setup for Day 2 has been successfully completed, refactoring the root endpoint and incorporating new hardcoded projects and sites endpoints. Both new API endpoints return the exact JSON values required, tested successfully on localhost.
