@@ -1,9 +1,14 @@
 from fastapi import FastAPI
 
+from app.database.database import Base, engine
+from app.models.project import Project  # Import to register model with Base metadata
 from app.api.home import router as home_router
 from app.api.projects import router as projects_router
 from app.api.sites import router as sites_router
 from app.api.predictions import router as predictions_router
+
+# Create the database tables automatically
+Base.metadata.create_all(bind=engine)
 
 # Initialize the FastAPI application with professional metadata
 app = FastAPI(

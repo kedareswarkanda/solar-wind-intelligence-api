@@ -17,22 +17,33 @@ As part of the Day 2 assignment, the application has been refactored into a modu
 *   `GET /sites` was implemented to return hardcoded renewable energy site coordinates.
 *   The predictions router (`app/api/predictions.py`) was registered with the app but remains empty, ready to receive future prediction logic.
 
-## 4. Features
+## 4. Day 3 - SQLAlchemy and PostgreSQL Persistence Layer Setup
+As part of the Day 3 assignment, database configuration and ORM mapping have been established:
+*   **SQLAlchemy Configuration**: Created a database configuration layer under `app/database/database.py` initializing:
+    *   `engine`: Connects SQLAlchemy with the local PostgreSQL server.
+    *   `SessionLocal`: Factory for creating individual database sessions.
+    *   `Base`: Parent declarative base class for mapping Python model classes to database tables.
+*   **Database Integration**: Configured database connection using the environment variable `DATABASE_URL` stored safely in a local `.env` file (ignored by Git for security).
+*   **Project ORM Model**: Created the database model under `app/models/project.py` mapping to the PostgreSQL `projects` table:
+    *   `id`: Integer, Primary Key.
+    *   `project_name`: String.
+    *   `location`: String.
+*   **Automatic Table Generation**: Imported `Base`, `engine`, and the `Project` model inside `main.py`, executing `Base.metadata.create_all(bind=engine)` upon application startup to automatically create the `projects` table in PostgreSQL.
+*   **API and Model Alignment**: Verified that the Project SQLAlchemy model and the fields in `GET /projects` represent the same entity exactly (`id`, `project_name`, `location`).
+*   *Note: According to internship requirements, `GET /projects` still returns hardcoded data and is not yet connected to read from the PostgreSQL database. The persistence layer has been prepared for future database integration.*
+
+## 5. Features
 *   FastAPI backend setup with modular router architecture
 *   Local Uvicorn server
-*   `GET /` endpoint (Home route)
-*   `GET /projects` endpoint (Renewable projects list)
-*   `GET /sites` endpoint (Renewable site coordinates)
-*   `GET /health` endpoint (Operational status)
-*   `GET /about` endpoint (Project information)
+*   SQLAlchemy ORM integration with PostgreSQL
+*   Automatic database table creation
+*   `GET /` endpoint (Home welcome route)
+*   `GET /projects` endpoint (Renewable projects list - hardcoded)
+*   `GET /sites` endpoint (Renewable site coordinates - hardcoded)
+*   `GET /health` endpoint (System status regression check)
+*   `GET /about` endpoint (Project information regression check)
 *   JSON API responses
 *   Swagger UI documentation
-
-## 5. Technologies Used
-*   **Python**: Programming language used for development.
-*   **FastAPI**: A modern, fast (high-performance), web framework for building APIs.
-*   **Uvicorn**: A lightning-fast ASGI server implementation, used to run the FastAPI application.
-*   **Swagger UI**: Automatically generated interactive API documentation.
 
 ## 6. Project Structure
 The repository contains the following clean, professional project structure:
@@ -43,23 +54,34 @@ solar-wind-intelligence-api/
 │
 ├── app/
 │   ├── __init__.py
-│   └── api/
+│   │
+│   ├── api/
+│   │   ├── __init__.py
+│   │   ├── home.py
+│   │   ├── projects.py
+│   │   ├── sites.py
+│   │   └── predictions.py
+│   │
+│   ├── database/
+│   │   ├── __init__.py
+│   │   └── database.py
+│   │
+│   └── models/
 │       ├── __init__.py
-│       ├── home.py
-│       ├── projects.py
-│       ├── sites.py
-│       └── predictions.py
+│       └── project.py
 │
 ├── requirements.txt
 ├── README.md
-└── .gitignore
+├── .gitignore
+└── .env
 ```
-*Note: The virtual environment (`venv/`) is kept locally and ignored from the Git repository using `.gitignore`.*
+*Note: The virtual environment (`venv/`) and environment variable configuration (`.env`) are kept locally and ignored from the Git repository using `.gitignore`.*
 
 ## 7. Prerequisites
 To run this application, make sure you have the following installed on your system:
 *   **Python 3.8+** (Ensure Python is added to your system's PATH variable)
 *   **pip** (Python package installer, which comes bundled with Python)
+*   **PostgreSQL** database installed and running locally
 *   **VS Code** (Recommended IDE for a smooth development experience)
 
 ## 8. Installation
@@ -97,6 +119,13 @@ Install all the required Python packages:
 ```bash
 pip install -r requirements.txt
 ```
+
+### Step 5: Configure Environment Variables
+Create a `.env` file in the root folder of the project and add the database URL containing your PostgreSQL database credentials:
+```text
+DATABASE_URL=postgresql://postgres:YOUR_POSTGRES_PASSWORD@localhost:5432/solar_wind_db
+```
+*(Make sure to URL-encode any special characters in your password, e.g. replacing `@` with `%40`)*
 
 ## 9. Running the Application
 Start the Uvicorn ASGI development server using the command below:
@@ -190,4 +219,4 @@ You can manually verify the API endpoints directly in your browser:
 *   Accessing [http://127.0.0.1:8000/about](http://127.0.0.1:8000/about) should display the project name.
 
 ## 15. Assignment Result
-The modular router setup for Day 2 has been successfully completed, refactoring the root endpoint and incorporating new hardcoded projects and sites endpoints. Both new API endpoints return the exact JSON values required, tested successfully on localhost.
+The database and persistence configuration for Day 3 has been successfully completed, integrating SQLAlchemy Engine, SessionLocal, and declarative Base. The Project ORM database model maps correctly to the PostgreSQL projects table schema, generated automatically upon application startup. Both new API endpoints return the exact JSON values required, tested successfully on localhost.
