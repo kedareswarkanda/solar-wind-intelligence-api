@@ -8,6 +8,7 @@ from app.api.projects import router as projects_router
 from app.api.sites import router as sites_router
 from app.api.predictions import router as predictions_router
 from routers.features import router as features_router
+from app.api.dashboard import router as dashboard_router
 
 # Create the database tables automatically
 Base.metadata.create_all(bind=engine)
@@ -25,6 +26,7 @@ app.include_router(projects_router)
 app.include_router(sites_router)
 app.include_router(predictions_router)
 app.include_router(features_router)
+app.include_router(dashboard_router)
 
 
 @app.get("/health", tags=["System"])

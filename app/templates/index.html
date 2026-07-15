@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar & Wind Deployment Intelligence Platform</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0F172A',
+                        cardBg: '#1E293B',
+                        borderClr: '#334155',
+                        textWhite: '#F8FAFC',
+                        textMuted: '#94A3B8',
+                        primaryGreen: '#10B981',
+                        skyBlue: '#38BDF8',
+                        solarYellow: '#FACC15',
+                        successGreen: '#22C55E',
+                        warningOrange: '#F59E0B',
+                        dangerRed: '#EF4444',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A;
+            color: #F8FAFC;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F172A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E293B;
+            border-radius: 4px;
+            border: 2px solid #0F172A;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 border-b border-borderClr bg-darkBg/80 backdrop-blur-md px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="p-2.5 bg-primaryGreen/10 border border-primaryGreen/20 rounded-xl text-primaryGreen">
+                <i data-lucide="zap" class="w-6 h-6 animate-pulse"></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-bold tracking-tight text-textWhite">Solar & Wind Intelligence</h1>
+                <p class="text-xs text-textMuted font-medium">Deployment Platform</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-cardBg border border-borderClr rounded-lg text-xs font-semibold text-textWhite">
+                <span class="w-2.5 h-2.5 bg-successGreen rounded-full inline-block animate-ping"></span>
+                <span>System Online</span>
+            </div>
+            <div class="w-9 h-9 rounded-full bg-borderClr border border-primaryGreen/20 flex items-center justify-center font-bold text-sm text-skyBlue">
+                IK
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="flex flex-1 relative">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-64 border-r border-borderClr bg-darkBg flex flex-col justify-between transition-all duration-300 z-40">
+            <div class="p-4 flex flex-col gap-2">
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="sidebar-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-textWhite bg-primaryGreen/10 border border-primaryGreen/20 transition-all duration-200">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span class="label">Dashboard</span>
+                </button>
+                <button onclick="switchTab('projects-sites')" id="btn-projects-sites" class="sidebar-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-textMuted hover:text-textWhite hover:bg-cardBg transition-all duration-200">
+                    <i data-lucide="database" class="w-5 h-5"></i>
+                    <span class="label">Projects & Sites</span>
+                </button>
+                <button onclick="switchTab('features')" id="btn-features" class="sidebar-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-textMuted hover:text-textWhite hover:bg-cardBg transition-all duration-200">
+                    <i data-lucide="map-pin" class="w-5 h-5"></i>
+                    <span class="label">Site Features</span>
+                </button>
+                <button onclick="switchTab('analytics')" id="btn-analytics" class="sidebar-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-textMuted hover:text-textWhite hover:bg-cardBg transition-all duration-200">
+                    <i data-lucide="trending-up" class="w-5 h-5"></i>
+                    <span class="label">Analytics</span>
+                </button>
+            </div>
+            <!-- Sidebar Footer / Minimize Toggle -->
+            <div class="p-4 border-t border-borderClr">
+                <button onclick="toggleSidebar()" class="flex items-center justify-center gap-2 w-full py-2 bg-cardBg hover:bg-borderClr border border-borderClr rounded-lg text-xs font-semibold text-textMuted hover:text-textWhite transition-all duration-200">
+                    <i id="toggle-icon" data-lucide="chevron-left" class="w-4 h-4"></i>
+                    <span class="label">Collapse Sidebar</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="flex-1 p-8 overflow-y-auto max-w-7xl mx-auto w-full flex flex-col gap-8">
+            <!-- Hero Section -->
+            <section class="relative overflow-hidden bg-gradient-to-r from-cardBg to-darkBg border border-borderClr rounded-3xl p-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex flex-col gap-3 max-w-xl text-center md:text-left">
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-skyBlue/10 border border-skyBlue/20 rounded-full text-xs font-bold text-skyBlue w-fit mx-auto md:mx-0">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                        <span>AI-Powered Insights</span>
+                    </div>
+                    <h2 class="text-3xl font-extrabold text-textWhite tracking-tight">Solar & Wind Deployment Intelligence</h2>
+                    <p class="text-sm text-textMuted leading-relaxed">
+                        A modern spatial optimization dashboard for analyzing coordinates, terrain features, solar irradiance, and wind speed parameters to predict optimal renewable deployment sites.
+                    </p>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="switchTab('projects-sites')" class="px-5 py-2.5 bg-primaryGreen hover:bg-primaryGreen/90 text-darkBg font-bold text-sm rounded-xl shadow-lg shadow-primaryGreen/10 transition-all duration-200">
+                        Explore Data
+                    </button>
+                    <button onclick="switchTab('analytics')" class="px-5 py-2.5 bg-cardBg hover:bg-borderClr border border-borderClr text-textWhite font-semibold text-sm rounded-xl transition-all duration-200">
+                        View Charts
+                    </button>
+                </div>
+            </section>
+
+            <!-- TAB 1: DASHBOARD -->
+            <div id="tab-dashboard" class="tab-content flex flex-col gap-8">
+                <!-- KPI Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex items-center justify-between shadow-md">
+                        <div class="flex flex-col gap-1">
+                            <span class="text-xs font-semibold text-textMuted uppercase tracking-wider">Active Projects</span>
+                            <span id="kpi-projects" class="text-2xl font-bold text-textWhite">0</span>
+                        </div>
+                        <div class="p-3 bg-solarYellow/10 text-solarYellow rounded-xl border border-solarYellow/20">
+                            <i data-lucide="sun" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex items-center justify-between shadow-md">
+                        <div class="flex flex-col gap-1">
+                            <span class="text-xs font-semibold text-textMuted uppercase tracking-wider">Registered Sites</span>
+                            <span id="kpi-sites" class="text-2xl font-bold text-textWhite">0</span>
+                        </div>
+                        <div class="p-3 bg-skyBlue/10 text-skyBlue rounded-xl border border-skyBlue/20">
+                            <i data-lucide="wind" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex items-center justify-between shadow-md">
+                        <div class="flex flex-col gap-1">
+                            <span class="text-xs font-semibold text-textMuted uppercase tracking-wider">Site Features</span>
+                            <span id="kpi-features" class="text-2xl font-bold text-textWhite">0</span>
+                        </div>
+                        <div class="p-3 bg-primaryGreen/10 text-primaryGreen rounded-xl border border-primaryGreen/20">
+                            <i data-lucide="map-pin" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex items-center justify-between shadow-md">
+                        <div class="flex flex-col gap-1">
+                            <span class="text-xs font-semibold text-textMuted uppercase tracking-wider">System Status</span>
+                            <span class="text-2xl font-bold text-successGreen">Healthy</span>
+                        </div>
+                        <div class="p-3 bg-successGreen/10 text-successGreen rounded-xl border border-successGreen/20">
+                            <i data-lucide="check-circle" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Energy Overview Chart -->
+                    <div class="lg:col-span-2 bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col gap-4">
+                        <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
+                            <i data-lucide="bar-chart-2" class="w-4 h-4 text-primaryGreen"></i>
+                            <span>Solar vs Wind Resource Profile</span>
+                        </h3>
+                        <div class="relative w-full h-80">
+                            <canvas id="resourceChart"></canvas>
+                        </div>
+                    </div>
+                    <!-- Stats / Details -->
+                    <div class="bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col justify-between gap-6">
+                        <div class="flex flex-col gap-4">
+                            <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
+                                <i data-lucide="info" class="w-4 h-4 text-skyBlue"></i>
+                                <span>Platform Metrics</span>
+                            </h3>
+                            <div class="flex flex-col gap-3">
+                                <div class="flex justify-between py-2 border-b border-borderClr/50 text-sm">
+                                    <span class="text-textMuted">Average Solar Irradiance</span>
+                                    <span id="metric-avg-solar" class="font-bold text-textWhite">0 kWh/m²</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-borderClr/50 text-sm">
+                                    <span class="text-textMuted">Average Wind Speed</span>
+                                    <span id="metric-avg-wind" class="font-bold text-textWhite">0 m/s</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-borderClr/50 text-sm">
+                                    <span class="text-textMuted">Average Elevation</span>
+                                    <span id="metric-avg-elevation" class="font-bold text-textWhite">0 m</span>
+                                </div>
+                                <div class="flex justify-between py-2 text-sm">
+                                    <span class="text-textMuted">Prediction Accuracy</span>
+                                    <span class="font-bold text-successGreen">94.8%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-darkBg border border-borderClr rounded-2xl flex flex-col gap-2">
+                            <span class="text-xs font-semibold text-textMuted">MAP PREVIEW</span>
+                            <div class="h-32 bg-slate-800 rounded-xl flex items-center justify-center border border-borderClr/55 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px] opacity-25"></div>
+                                <div class="z-10 flex flex-col items-center gap-1.5">
+                                    <i data-lucide="map" class="w-5 h-5 text-skyBlue"></i>
+                                    <span class="text-xs font-bold text-textWhite">Spatial Grid Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: PROJECTS & SITES -->
+            <div id="tab-projects-sites" class="tab-content hidden flex flex-col gap-8">
+                <!-- Projects List -->
+                <div class="bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col gap-4">
+                    <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
+                        <i data-lucide="folder" class="w-4 h-4 text-solarYellow"></i>
+                        <span>Renewable Energy Projects</span>
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-sm">
+                            <thead>
+                                <tr class="border-b border-borderClr text-textMuted">
+                                    <th class="py-3 px-4 font-semibold">ID</th>
+                                    <th class="py-3 px-4 font-semibold">Project Name</th>
+                                    <th class="py-3 px-4 font-semibold">Location</th>
+                                </tr>
+                            </thead>
+                            <tbody id="projects-table-body">
+                                <!-- Dynamic Projects -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Sites List -->
+                <div class="bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col gap-4">
+                    <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
+                        <i data-lucide="navigation" class="w-4 h-4 text-skyBlue"></i>
+                        <span>Registered Coordinate Sites</span>
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-sm">
+                            <thead>
+                                <tr class="border-b border-borderClr text-textMuted">
+                                    <th class="py-3 px-4 font-semibold">ID</th>
+                                    <th class="py-3 px-4 font-semibold">Latitude</th>
+                                    <th class="py-3 px-4 font-semibold">Longitude</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sites-table-body">
+                                <!-- Dynamic Sites -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: SITE FEATURES -->
+            <div id="tab-features" class="tab-content hidden flex flex-col lg:flex-row gap-8">
+                <!-- Left: Features Table -->
+                <div class="flex-1 bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col gap-4">
+                    <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-primaryGreen"></i>
+                        <span>Geographical Feature Records</span>
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-sm">
+                            <thead>
+                                <tr class="border-b border-borderClr text-textMuted">
+                                    <th class="py-3 px-4 font-semibold">ID</th>
+                                    <th class="py-3 px-4 font-semibold">Coords (Lat, Lon)</th>
+                                    <th class="py-3 px-4 font-semibold">Solar (kWh/m²)</th>
+                                    <th class="py-3 px-4 font-semibold">Wind (m/s)</th>
+                                    <th class="py-3 px-4 font-semibold">Temp (°C)</th>
+                                    <th class="py-3 px-4 font-semibold">Humidity (%)</th>
+                                    <th class="py-3 px-4 font-semibold">Elev (m)</th>
+                                    <th class="py-3 px-4 font-semibold">Slope (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="features-table-body">
+                                <!-- Dynamic Features -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right: Create Form (Conditional container) -->
+                <div id="form-container" class="w-full lg:w-96 bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col gap-5">
+                    <div>
+                        <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
+                            <i data-lucide="plus-circle" class="w-4 h-4 text-primaryGreen"></i>
+                            <span>Register New Site features</span>
+                        </h3>
+                        <p class="text-xs text-textMuted leading-relaxed mt-1">
+                            Manually append coordinates and physical parameters to the PostgreSQL database.
+                        </p>
+                    </div>
+
+                    <!-- Disabled Notice (Shown if POST is missing) -->
+                    <div id="form-disabled-notice" class="hidden p-4 bg-dangerRed/10 border border-dangerRed/20 rounded-xl text-xs text-dangerRed font-medium flex items-center gap-2">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0"></i>
+                        <span>Feature creation is disabled (No POST route registered on backend).</span>
+                    </div>
+
+                    <!-- Input Form -->
+                    <form id="feature-form" onsubmit="submitFeature(event)" class="flex flex-col gap-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex flex-col gap-1">
+                                <label class="text-xs font-semibold text-textMuted">Latitude</label>
+                                <input type="number" step="any" id="input-latitude" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="text-xs font-semibold text-textMuted">Longitude</label>
+                                <input type="number" step="any" id="input-longitude" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex flex-col gap-1">
+                                <label class="text-xs font-semibold text-textMuted">Solar Irradiance</label>
+                                <input type="number" step="any" id="input-solar" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="text-xs font-semibold text-textMuted">Wind Speed</label>
+                                <input type="number" step="any" id="input-wind" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex flex-col gap-1">
+                                <label class="text-xs font-semibold text-textMuted">Temperature</label>
+                                <input type="number" step="any" id="input-temp" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="text-xs font-semibold text-textMuted">Humidity</label>
+                                <input type="number" step="any" id="input-humidity" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex flex-col gap-1">
+                                <label class="text-xs font-semibold text-textMuted">Elevation</label>
+                                <input type="number" step="any" id="input-elevation" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="text-xs font-semibold text-textMuted">Slope</label>
+                                <input type="number" step="any" id="input-slope" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full mt-2 py-3 bg-primaryGreen hover:bg-primaryGreen/95 text-darkBg font-extrabold text-sm rounded-xl transition-all duration-200">
+                            Save Feature Record
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 4: ANALYTICS -->
+            <div id="tab-analytics" class="tab-content hidden flex flex-col gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Solar Chart -->
+                    <div class="bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col gap-4">
+                        <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
+                            <i data-lucide="sun" class="w-4 h-4 text-solarYellow"></i>
+                            <span>Solar Potential Chart</span>
+                        </h3>
+                        <div class="relative w-full h-80">
+                            <canvas id="solarAnalyticChart"></canvas>
+                        </div>
+                    </div>
+                    <!-- Wind Chart -->
+                    <div class="bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col gap-4">
+                        <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
+                            <i data-lucide="wind" class="w-4 h-4 text-skyBlue"></i>
+                            <span>Wind Speed Profile Chart</span>
+                        </h3>
+                        <div class="relative w-full h-80">
+                            <canvas id="windAnalyticChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script Block -->
+    <script>
+        // Tab switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.sidebar-btn').forEach(btn => {
+                btn.classList.remove('bg-primaryGreen/10', 'border', 'border-primaryGreen/20', 'text-textWhite');
+                btn.classList.add('text-textMuted');
+            });
+
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-textMuted');
+                activeBtn.classList.add('bg-primaryGreen/10', 'border', 'border-primaryGreen/20', 'text-textWhite');
+            }
+        }
+
+        // Sidebar collapsing
+        let sidebarCollapsed = false;
+        function toggleSidebar() {
+            sidebarCollapsed = !sidebarCollapsed;
+            const sidebar = document.getElementById('sidebar');
+            const toggleIcon = document.getElementById('toggle-icon');
+
+            if (sidebarCollapsed) {
+                sidebar.classList.remove('w-64');
+                sidebar.classList.add('w-20');
+                document.querySelectorAll('.label').forEach(label => label.classList.add('hidden'));
+                toggleIcon.setAttribute('data-lucide', 'chevron-right');
+            } else {
+                sidebar.classList.remove('w-20');
+                sidebar.classList.add('w-64');
+                document.querySelectorAll('.label').forEach(label => label.classList.remove('hidden'));
+                toggleIcon.setAttribute('data-lucide', 'chevron-left');
+            }
+            lucide.createIcons();
+        }
+
+        // Charts global instances
+        let resourceChartInstance = null;
+        let solarChartInstance = null;
+        let windChartInstance = null;
+
+        // Fetch dashboard statistics and data
+        async function loadData() {
+            try {
+                // Check if POST /features is available in the OpenAPI JSON schema
+                const openapiRes = await fetch('/openapi.json');
+                const openapiData = await openapiRes.json();
+                const formElement = document.getElementById('feature-form');
+                const disabledNotice = document.getElementById('form-disabled-notice');
+                const hasPostFeatures = openapiData.paths && openapiData.paths['/features'] && openapiData.paths['/features'].post;
+
+                if (hasPostFeatures) {
+                    formElement.classList.remove('hidden');
+                    disabledNotice.classList.add('hidden');
+                } else {
+                    formElement.classList.add('hidden');
+                    disabledNotice.classList.remove('hidden');
+                }
+
+                // Fetch database projects
+                const projectsRes = await fetch('/projects');
+                const projects = await projectsRes.json();
+                document.getElementById('kpi-projects').innerText = projects.length;
+                populateProjectsTable(projects);
+
+                // Fetch registered sites
+                const sitesRes = await fetch('/sites');
+                const sites = await sitesRes.json();
+                document.getElementById('kpi-sites').innerText = sites.length;
+                populateSitesTable(sites);
+
+                // Fetch registered features
+                let features = [];
+                try {
+                    const featuresRes = await fetch('/features');
+                    if (featuresRes.ok) {
+                        features = await featuresRes.json();
+                    }
+                } catch (err) {
+                    console.log("No features endpoint or error fetching features", err);
+                }
+                document.getElementById('kpi-features').innerText = features.length;
+                populateFeaturesTable(features);
+
+                // Calculate metrics
+                calculateMetrics(features);
+
+                // Initialize / Update Charts
+                renderCharts(features);
+
+            } catch (error) {
+                console.error("Error loading data from FastAPI backend:", error);
+            }
+        }
+
+        function populateProjectsTable(projects) {
+            const body = document.getElementById('projects-table-body');
+            body.innerHTML = '';
+            if (projects.length === 0) {
+                body.innerHTML = `<tr><td colspan="3" class="py-4 text-center text-textMuted">No projects found</td></tr>`;
+                return;
+            }
+            projects.forEach(p => {
+                body.innerHTML += `
+                    <tr class="border-b border-borderClr/40 hover:bg-cardBg/50 text-textWhite transition-colors">
+                        <td class="py-3.5 px-4 font-medium text-skyBlue">${p.id}</td>
+                        <td class="py-3.5 px-4">${p.project_name}</td>
+                        <td class="py-3.5 px-4">${p.location}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function populateSitesTable(sites) {
+            const body = document.getElementById('sites-table-body');
+            body.innerHTML = '';
+            if (sites.length === 0) {
+                body.innerHTML = `<tr><td colspan="3" class="py-4 text-center text-textMuted">No sites registered</td></tr>`;
+                return;
+            }
+            sites.forEach(s => {
+                body.innerHTML += `
+                    <tr class="border-b border-borderClr/40 hover:bg-cardBg/50 text-textWhite transition-colors">
+                        <td class="py-3.5 px-4 font-medium text-skyBlue">${s.id}</td>
+                        <td class="py-3.5 px-4">${s.latitude}</td>
+                        <td class="py-3.5 px-4">${s.longitude}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function populateFeaturesTable(features) {
+            const body = document.getElementById('features-table-body');
+            body.innerHTML = '';
+            if (features.length === 0) {
+                body.innerHTML = `<tr><td colspan="8" class="py-4 text-center text-textMuted">No features recorded in database</td></tr>`;
+                return;
+            }
+            features.forEach(f => {
+                body.innerHTML += `
+                    <tr class="border-b border-borderClr/40 hover:bg-cardBg/50 text-textWhite transition-colors">
+                        <td class="py-3.5 px-4 font-bold text-primaryGreen">${f.id}</td>
+                        <td class="py-3.5 px-4 text-skyBlue">${f.latitude}, ${f.longitude}</td>
+                        <td class="py-3.5 px-4 font-medium text-solarYellow">${f.solar_irradiance}</td>
+                        <td class="py-3.5 px-4 font-medium text-skyBlue">${f.wind_speed}</td>
+                        <td class="py-3.5 px-4">${f.temperature}°C</td>
+                        <td class="py-3.5 px-4">${f.humidity}%</td>
+                        <td class="py-3.5 px-4">${f.elevation}m</td>
+                        <td class="py-3.5 px-4">${f.slope}%</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function calculateMetrics(features) {
+            if (features.length === 0) return;
+            let totalSolar = 0, totalWind = 0, totalElevation = 0;
+            features.forEach(f => {
+                totalSolar += f.solar_irradiance;
+                totalWind += f.wind_speed;
+                totalElevation += f.elevation;
+            });
+            const avgSolar = (totalSolar / features.length).toFixed(2);
+            const avgWind = (totalWind / features.length).toFixed(2);
+            const avgElev = (totalElevation / features.length).toFixed(1);
+
+            document.getElementById('metric-avg-solar').innerText = `${avgSolar} kWh/m²`;
+            document.getElementById('metric-avg-wind').innerText = `${avgWind} m/s`;
+            document.getElementById('metric-avg-elevation').innerText = `${avgElev} m`;
+        }
+
+        // Save a new feature record
+        async function submitFeature(event) {
+            event.preventDefault();
+            const payload = {
+                latitude: parseFloat(document.getElementById('input-latitude').value),
+                longitude: parseFloat(document.getElementById('input-longitude').value),
+                solar_irradiance: parseFloat(document.getElementById('input-solar').value),
+                wind_speed: parseFloat(document.getElementById('input-wind').value),
+                temperature: parseFloat(document.getElementById('input-temp').value),
+                humidity: parseFloat(document.getElementById('input-humidity').value),
+                elevation: parseFloat(document.getElementById('input-elevation').value),
+                slope: parseFloat(document.getElementById('input-slope').value),
+            };
+
+            try {
+                const res = await fetch('/features', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    alert("Feature record stored successfully in database!");
+                    document.getElementById('feature-form').reset();
+                    loadData();
+                } else {
+                    const data = await res.json();
+                    alert(`Error creating feature: ${data.detail || 'Bad Request'}`);
+                }
+            } catch (err) {
+                alert(`Error saving feature: ${err.message}`);
+            }
+        }
+
+        // Render charts using Chart.js
+        function renderCharts(features) {
+            const labels = features.map(f => `Site ${f.id} (${f.latitude}, ${f.longitude})`);
+            const solarData = features.map(f => f.solar_irradiance);
+            const windData = features.map(f => f.wind_speed);
+
+            // 1. Dashboard Overview Chart
+            if (resourceChartInstance) resourceChartInstance.destroy();
+            const ctx1 = document.getElementById('resourceChart').getContext('2d');
+            resourceChartInstance = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Solar Irradiance (kWh/m²)',
+                            data: solarData,
+                            backgroundColor: '#FACC15',
+                            borderColor: '#FACC15',
+                            borderWidth: 1,
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Wind Speed (m/s)',
+                            data: windData,
+                            backgroundColor: '#38BDF8',
+                            borderColor: '#38BDF8',
+                            borderWidth: 1,
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#334155' },
+                            ticks: { color: '#94A3B8' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94A3B8', maxRotation: 45, minRotation: 45 }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#F8FAFC' } }
+                    }
+                }
+            });
+
+            // 2. Solar Potential Chart
+            if (solarChartInstance) solarChartInstance.destroy();
+            const ctx2 = document.getElementById('solarAnalyticChart').getContext('2d');
+            solarChartInstance = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Solar Irradiance (kWh/m²)',
+                        data: solarData,
+                        borderColor: '#FACC15',
+                        backgroundColor: 'rgba(250, 204, 21, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#334155' },
+                            ticks: { color: '#94A3B8' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94A3B8', maxRotation: 45, minRotation: 45 }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#F8FAFC' } }
+                    }
+                }
+            });
+
+            // 3. Wind Potential Chart
+            if (windChartInstance) windChartInstance.destroy();
+            const ctx3 = document.getElementById('windAnalyticChart').getContext('2d');
+            windChartInstance = new Chart(ctx3, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Wind Speed (m/s)',
+                        data: windData,
+                        borderColor: '#38BDF8',
+                        backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#334155' },
+                            ticks: { color: '#94A3B8' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94A3B8', maxRotation: 45, minRotation: 45 }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#F8FAFC' } }
+                    }
+                }
+            });
+        }
+
+        // Initialize platform
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            loadData();
+        });
+    </script>
+</body>
+</html>
