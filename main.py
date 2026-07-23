@@ -11,6 +11,8 @@ from routers.features import router as features_router
 from app.api.dashboard import router as dashboard_router
 from routers.solar import router as solar_router
 
+from fastapi.staticfiles import StaticFiles
+
 # Create the database tables automatically
 Base.metadata.create_all(bind=engine)
 
@@ -20,6 +22,9 @@ app = FastAPI(
     description="Backend API for the Solar & Wind Deployment Intelligence Platform",
     version="1.0.0"
 )
+
+# Mount static files directory for images
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # Register feature routers
 app.include_router(home_router)

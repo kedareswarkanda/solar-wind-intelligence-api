@@ -11,14 +11,17 @@
             theme: {
                 extend: {
                     colors: {
-                        darkBg: '#090D16',       // Premium Dark Slate
-                        cardBg: '#0F172A',       // Corporate Navy Blue
-                        borderClr: '#1E293B',    // Clean Steel Slate Border
-                        textWhite: '#FFFFFF',    // High contrast White
-                        textMuted: '#94A3B8',    // Soft Slate Gray
-                        primaryGreen: '#10B981', // Accent Emerald Green
-                        skyBlue: '#38BDF8',      // Soft Sky Blue
-                        solarYellow: '#FACC15',  // Solar Gold
+                        brandPrimary: '#2563EB',   // Sky Blue (Corporate Accent)
+                        brandHover: '#1D4ED8',     // Royal Blue
+                        darkNavy: '#0F172A',       // Dark Navy for high contrast text
+                        textDark: '#111827',       // Near Black
+                        textGray: '#374151',       // Dark Slate Gray
+                        textMuted: '#6B7280',      // Soft Muted Gray
+                        lightBg: '#FFFFFF',        // Dominant background
+                        panelBg: '#F8FAFC',        // Secondary card background
+                        borderClr: '#E2E8F0',      // Clean Light border
+                        accentGreen: '#16A34A',    // Green Accent
+                        solarYellow: '#FBBF24',    // Solar Gold Accent
                         successGreen: '#22C55E',
                         warningOrange: '#F59E0B',
                         dangerRed: '#EF4444',
@@ -36,8 +39,8 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #090D16;
-            color: #F8FAFC;
+            background-color: #FFFFFF;
+            color: #111827;
         }
         /* Custom scrollbar */
         ::-webkit-scrollbar {
@@ -45,52 +48,36 @@
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #090D16;
+            background: #F8FAFC;
         }
         ::-webkit-scrollbar-thumb {
-            background: #0F172A;
+            background: #E2E8F0;
             border-radius: 4px;
-            border: 2px solid #090D16;
+            border: 2px solid #F8FAFC;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #1E293B;
-        }
-        /* Wind Turbine Blade Rotation Animation */
-        @keyframes rotateRotor {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        .turbine-rotor {
-            animation: rotateRotor 12s linear infinite;
-            transform-origin: 0px 0px;
-        }
-        .wind-turbine-fast .turbine-rotor {
-            animation-duration: 8s;
+            background: #CBD5E1;
         }
     </style>
 </head>
-<body class="overflow-x-hidden min-h-screen flex flex-col">
+<body class="overflow-x-hidden min-h-screen flex flex-col bg-lightBg">
     <!-- Navbar -->
-    <nav class="sticky top-0 z-50 border-b border-borderClr bg-darkBg/80 backdrop-blur-md px-6 py-4 flex items-center justify-between">
+    <nav class="sticky top-0 z-50 border-b border-borderClr bg-white/90 backdrop-blur-md px-6 py-4 flex items-center justify-between shadow-sm">
         <div class="flex items-center gap-3">
-            <div class="p-2.5 bg-primaryGreen/10 border border-primaryGreen/20 rounded-xl text-primaryGreen">
-                <i data-lucide="zap" class="w-6 h-6 animate-pulse"></i>
+            <div class="p-2 bg-brandPrimary/10 border border-brandPrimary/20 rounded-xl text-brandPrimary">
+                <i data-lucide="zap" class="w-6 h-6"></i>
             </div>
             <div>
-                <h1 class="text-lg font-bold tracking-tight text-textWhite">Solar & Wind Intelligence</h1>
+                <h1 class="text-lg font-bold tracking-tight text-darkNavy">Solar & Wind Intelligence</h1>
                 <p class="text-xs text-textMuted font-medium">Deployment Platform</p>
             </div>
         </div>
         <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2 px-3 py-1.5 bg-cardBg border border-borderClr rounded-lg text-xs font-semibold text-textWhite">
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-panelBg border border-borderClr rounded-lg text-xs font-semibold text-textDark">
                 <span class="w-2.5 h-2.5 bg-successGreen rounded-full inline-block animate-ping"></span>
                 <span>System Online</span>
             </div>
-            <div class="w-9 h-9 rounded-full bg-borderClr border border-primaryGreen/20 flex items-center justify-center font-bold text-sm text-skyBlue">
+            <div class="w-9 h-9 rounded-full bg-borderClr border border-brandPrimary/20 flex items-center justify-center font-bold text-sm text-brandPrimary">
                 IK
             </div>
         </div>
@@ -99,28 +86,28 @@
     <!-- Main Container -->
     <div class="flex flex-1 relative">
         <!-- Sidebar -->
-        <aside id="sidebar" class="w-64 border-r border-borderClr bg-darkBg flex flex-col justify-between transition-all duration-300 z-40">
+        <aside id="sidebar" class="w-64 border-r border-borderClr bg-panelBg flex flex-col justify-between transition-all duration-300 z-40">
             <div class="p-4 flex flex-col gap-2">
-                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="sidebar-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-textWhite bg-primaryGreen/10 border border-primaryGreen/20 transition-all duration-200">
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="sidebar-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-semibold text-brandPrimary bg-brandPrimary/10 border border-brandPrimary/20 transition-all duration-200">
                     <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                     <span class="label">Dashboard</span>
                 </button>
-                <button onclick="switchTab('projects-sites')" id="btn-projects-sites" class="sidebar-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-textMuted hover:text-textWhite hover:bg-cardBg transition-all duration-200">
+                <button onclick="switchTab('projects-sites')" id="btn-projects-sites" class="sidebar-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-textGray hover:text-brandPrimary hover:bg-white hover:shadow-sm transition-all duration-200">
                     <i data-lucide="database" class="w-5 h-5"></i>
                     <span class="label">Projects & Sites</span>
                 </button>
-                <button onclick="switchTab('features')" id="btn-features" class="sidebar-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-textMuted hover:text-textWhite hover:bg-cardBg transition-all duration-200">
+                <button onclick="switchTab('features')" id="btn-features" class="sidebar-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-textGray hover:text-brandPrimary hover:bg-white hover:shadow-sm transition-all duration-200">
                     <i data-lucide="map-pin" class="w-5 h-5"></i>
                     <span class="label">Site Features</span>
                 </button>
-                <button onclick="switchTab('analytics')" id="btn-analytics" class="sidebar-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-textMuted hover:text-textWhite hover:bg-cardBg transition-all duration-200">
+                <button onclick="switchTab('analytics')" id="btn-analytics" class="sidebar-btn flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-textGray hover:text-brandPrimary hover:bg-white hover:shadow-sm transition-all duration-200">
                     <i data-lucide="trending-up" class="w-5 h-5"></i>
                     <span class="label">Analytics</span>
                 </button>
             </div>
             <!-- Sidebar Footer / Minimize Toggle -->
             <div class="p-4 border-t border-borderClr">
-                <button onclick="toggleSidebar()" class="flex items-center justify-center gap-2 w-full py-2 bg-cardBg hover:bg-borderClr border border-borderClr rounded-lg text-xs font-semibold text-textMuted hover:text-textWhite transition-all duration-200">
+                <button onclick="toggleSidebar()" class="flex items-center justify-center gap-2 w-full py-2 bg-white hover:bg-panelBg border border-borderClr rounded-lg text-xs font-semibold text-textMuted hover:text-textDark transition-all duration-200">
                     <i id="toggle-icon" data-lucide="chevron-left" class="w-4 h-4"></i>
                     <span class="label">Collapse Sidebar</span>
                 </button>
@@ -128,139 +115,73 @@
         </aside>
 
         <!-- Content Area -->
-        <main class="flex-1 p-8 overflow-y-auto max-w-7xl mx-auto w-full flex flex-col gap-8">
+        <main class="flex-1 p-8 overflow-y-auto max-w-7xl mx-auto w-full flex flex-col gap-10">
 
             <!-- TAB 1: DASHBOARD -->
-            <div id="tab-dashboard" class="tab-content flex flex-col gap-10">
-                <!-- Hero Section -->
-                <section class="relative overflow-hidden bg-gradient-to-br from-cardBg to-darkBg border border-borderClr rounded-3xl p-8 flex flex-col md:flex-row justify-between items-center gap-8 shadow-xl shadow-skyBlue/5">
-                    <div class="flex flex-col gap-4 max-w-xl text-center md:text-left z-10">
-                        <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-skyBlue/10 border border-skyBlue/20 rounded-full text-xs font-bold text-skyBlue w-fit mx-auto md:mx-0">
-                            <i data-lucide="globe" class="w-3.5 h-3.5 animate-spin-slow"></i>
-                            <span>Smart Renewable Analytics</span>
+            <div id="tab-dashboard" class="tab-content flex flex-col gap-14">
+                <!-- Hero Section (Full-Width White/Clean Corporate) -->
+                <section class="flex flex-col lg:flex-row items-center justify-between gap-10 border-b border-borderClr pb-12">
+                    <div class="flex flex-col gap-6 max-w-2xl text-center lg:text-left">
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-brandPrimary/10 border border-brandPrimary/20 rounded-full text-xs font-bold text-brandPrimary w-fit mx-auto lg:mx-0">
+                            <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+                            <span>Enterprise Spatial Intelligence</span>
                         </div>
-                        <h2 class="text-3xl md:text-4xl font-extrabold text-textWhite tracking-tight leading-tight">
+                        <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-textDark tracking-tight leading-tight">
                             Powering the Future with Intelligent Renewable Energy
                         </h2>
-                        <p class="text-sm text-textMuted leading-relaxed">
-                            Analyze renewable resources, evaluate candidate sites, and optimize Solar, Wind, and Hybrid deployment using advanced spatial intelligence.
+                        <p class="text-lg md:text-xl text-textGray leading-relaxed max-w-xl">
+                            Analyze renewable resources, evaluate candidate sites, optimize Solar, Wind and Hybrid deployment using intelligent spatial analytics.
                         </p>
-                        <div class="flex flex-wrap gap-3 mt-2 justify-center md:justify-start">
-                            <button onclick="switchTab('projects-sites')" class="px-6 py-3 bg-skyBlue hover:bg-skyBlue/90 text-darkBg font-extrabold text-sm rounded-xl transition-all duration-200">
+                        <div class="flex flex-wrap gap-4 mt-2 justify-center lg:justify-start">
+                            <button onclick="switchTab('projects-sites')" class="px-6 py-3 bg-brandPrimary hover:bg-brandHover text-white font-extrabold text-sm rounded-xl shadow-lg shadow-brandPrimary/20 transition-all duration-200">
                                 Explore Dashboard
                             </button>
-                            <button onclick="switchTab('features')" class="px-6 py-3 bg-cardBg hover:bg-borderClr border border-borderClr text-textWhite font-semibold text-sm rounded-xl transition-all duration-200">
+                            <button onclick="switchTab('features')" class="px-6 py-3 bg-panelBg hover:bg-borderClr border border-borderClr text-textDark font-semibold text-sm rounded-xl transition-all duration-200">
                                 Analyze Sites
                             </button>
                         </div>
                     </div>
-                    <!-- Premium Clean-Energy Landscape SVG -->
-                    <div class="w-full md:w-1/2 max-w-sm md:max-w-md z-10">
-                        <svg class="w-full h-full max-h-[220px] md:max-h-[280px]" viewBox="0 0 500 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="skyGradient" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stop-color="#0F172A" />
-                                    <stop offset="100%" stop-color="#090D16" />
-                                </linearGradient>
-                                <linearGradient id="hillGradient" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stop-color="#047857" />
-                                    <stop offset="100%" stop-color="#064E3B" />
-                                </linearGradient>
-                                <linearGradient id="solarGradient" x1="0" y1="0" x2="1" y2="1">
-                                    <stop offset="0%" stop-color="#0284C7" />
-                                    <stop offset="100%" stop-color="#1E3A8A" />
-                                </linearGradient>
-                            </defs>
-                            <!-- Background Sky -->
-                            <rect width="500" height="300" rx="20" fill="url(#skyGradient)" />
-                            
-                            <!-- Glowing Sun/Solar representation -->
-                            <circle cx="410" cy="80" r="28" fill="#FACC15" opacity="0.8" />
-                            <circle cx="410" cy="80" r="36" fill="#EAB308" opacity="0.2" />
-
-                            <!-- Background hills -->
-                            <path d="M-50 300 L120 180 L280 240 L450 160 L550 300 Z" fill="#065F46" opacity="0.6" />
-                            <!-- Near Green Hills -->
-                            <path d="M-50 300 L150 210 L350 250 L550 200 L550 300 Z" fill="url(#hillGradient)" />
-
-                            <!-- Modern Solar Panels Group -->
-                            <g transform="translate(60, 220)">
-                                <line x1="20" y1="20" x2="20" y2="40" stroke="#475569" stroke-width="3" />
-                                <line x1="50" y1="20" x2="50" y2="40" stroke="#475569" stroke-width="3" />
-                                <polygon points="0,20 70,20 80,0 10,0" fill="url(#solarGradient)" stroke="#38BDF8" stroke-width="1.5" />
-                                <line x1="35" y1="20" x2="45" y2="0" stroke="#38BDF8" stroke-width="1" />
-                                <line x1="5" y1="10" x2="75" y2="10" stroke="#38BDF8" stroke-width="1" />
-                            </g>
-
-                            <!-- Modern Power Tower Infrastructure -->
-                            <g transform="translate(380, 150)" stroke="#1E293B" stroke-width="2" fill="none">
-                                <line x1="15" y1="80" x2="15" y2="0" />
-                                <line x1="0" y1="80" x2="15" y2="0" />
-                                <line x1="30" y1="80" x2="15" y2="0" />
-                                <line x1="-5" y1="20" x2="35" y2="20" />
-                                <line x1="-10" y1="45" x2="40" y2="45" />
-                            </g>
-
-                            <!-- Wind Turbine 1 (CSS Animated) -->
-                            <g class="wind-turbine" transform="translate(240, 110)">
-                                <path d="M-3 120 L-0.8 0 L0.8 0 L3 120 Z" fill="#F8FAFC" />
-                                <g class="turbine-rotor" transform="translate(0, 0)">
-                                    <circle cx="0" cy="0" r="4" fill="#94A3B8" />
-                                    <path d="M0 -3 C1.5 -18 0 -45 0 -45 C-0.7 -45 -1.5 -18 0 -3 Z" fill="#FFFFFF" />
-                                    <path d="M2.6 1.5 C15.6 9.0 39 19.5 39 19.5 C38.1 20.4 14.8 9.9 2.6 1.5 Z" fill="#FFFFFF" />
-                                    <path d="M-2.6 1.5 C-15.6 9.0 -39 19.5 -39 19.5 C-38.1 20.4 -14.8 9.9 -2.6 1.5 Z" fill="#FFFFFF" />
-                                </g>
-                            </g>
-
-                            <!-- Wind Turbine 2 -->
-                            <g class="wind-turbine-fast" transform="translate(305, 130)">
-                                <path d="M-2 100 L-0.6 0 L0.6 0 L2 100 Z" fill="#F8FAFC" opacity="0.9" />
-                                <g class="turbine-rotor" transform="translate(0, 0)">
-                                    <circle cx="0" cy="0" r="3" fill="#94A3B8" />
-                                    <path d="M0 -2.5 C1.2 -14 0 -35 0 -35 C-0.6 -35 -1.2 -14 0 -2.5 Z" fill="#FFFFFF" opacity="0.9" />
-                                    <path d="M2.1 1.2 C12.1 7.0 30.3 15 30.3 15 C29.6 15.7 11.5 7.7 2.1 1.2 Z" fill="#FFFFFF" opacity="0.9" />
-                                    <path d="M-2.1 1.2 C-12.1 7.0 -30.3 15 -30.3 15 C-29.6 15.7 -11.5 7.7 -2.1 1.2 Z" fill="#FFFFFF" opacity="0.9" />
-                                </g>
-                            </g>
-                        </svg>
+                    <!-- Right Side: Real Renewable Energy Photograph -->
+                    <div class="w-full lg:w-1/2 max-w-lg shadow-xl shadow-slate-200 rounded-3xl overflow-hidden border border-borderClr">
+                        <img src="/static/images/solar_wind_hero.png" alt="Renewable Energy Landscape" class="w-full h-auto object-cover max-h-[360px] hover:scale-105 transition-transform duration-700">
                     </div>
                 </section>
 
                 <!-- KPI Cards Section -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex items-center justify-between shadow-lg hover:border-solarYellow/30 transition-all duration-300">
+                    <div class="bg-white border border-borderClr p-6 rounded-2xl flex items-center justify-between shadow-sm hover:shadow-md hover:border-brandPrimary/30 transition-all duration-300">
                         <div class="flex flex-col gap-1">
                             <span class="text-xs font-semibold text-textMuted uppercase tracking-wider">Active Projects</span>
-                            <span id="kpi-projects" class="text-3xl font-bold text-textWhite">0</span>
+                            <span id="kpi-projects" class="text-3xl font-extrabold text-textDark">0</span>
                         </div>
                         <div class="p-3 bg-solarYellow/10 text-solarYellow rounded-xl border border-solarYellow/20">
                             <i data-lucide="folder" class="w-6 h-6"></i>
                         </div>
                     </div>
-                    <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex items-center justify-between shadow-lg hover:border-skyBlue/30 transition-all duration-300">
+                    <div class="bg-white border border-borderClr p-6 rounded-2xl flex items-center justify-between shadow-sm hover:shadow-md hover:border-brandPrimary/30 transition-all duration-300">
                         <div class="flex flex-col gap-1">
                             <span class="text-xs font-semibold text-textMuted uppercase tracking-wider">Registered Sites</span>
-                            <span id="kpi-sites" class="text-3xl font-bold text-textWhite">0</span>
+                            <span id="kpi-sites" class="text-3xl font-extrabold text-textDark">0</span>
                         </div>
-                        <div class="p-3 bg-skyBlue/10 text-skyBlue rounded-xl border border-skyBlue/20">
+                        <div class="p-3 bg-brandPrimary/10 text-brandPrimary rounded-xl border border-brandPrimary/20">
                             <i data-lucide="navigation" class="w-6 h-6"></i>
                         </div>
                     </div>
-                    <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex items-center justify-between shadow-lg hover:border-primaryGreen/30 transition-all duration-300">
+                    <div class="bg-white border border-borderClr p-6 rounded-2xl flex items-center justify-between shadow-sm hover:shadow-md hover:border-brandPrimary/30 transition-all duration-300">
                         <div class="flex flex-col gap-1">
                             <span class="text-xs font-semibold text-textMuted uppercase tracking-wider">Site Features</span>
-                            <span id="kpi-features" class="text-3xl font-bold text-textWhite">0</span>
+                            <span id="kpi-features" class="text-3xl font-extrabold text-textDark">0</span>
                         </div>
-                        <div class="p-3 bg-primaryGreen/10 text-primaryGreen rounded-xl border border-primaryGreen/20">
+                        <div class="p-3 bg-accentGreen/10 text-accentGreen rounded-xl border border-accentGreen/20">
                             <i data-lucide="map-pin" class="w-6 h-6"></i>
                         </div>
                     </div>
-                    <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex items-center justify-between shadow-lg hover:border-successGreen/30 transition-all duration-300">
+                    <div class="bg-white border border-borderClr p-6 rounded-2xl flex items-center justify-between shadow-sm hover:shadow-md hover:border-brandPrimary/30 transition-all duration-300">
                         <div class="flex flex-col gap-1">
                             <span class="text-xs font-semibold text-textMuted uppercase tracking-wider">System Status</span>
-                            <span class="text-3xl font-bold text-successGreen">Healthy</span>
+                            <span class="text-3xl font-extrabold text-accentGreen">Healthy</span>
                         </div>
-                        <div class="p-3 bg-successGreen/10 text-successGreen rounded-xl border border-successGreen/20">
+                        <div class="p-3 bg-accentGreen/10 text-accentGreen rounded-xl border border-accentGreen/20">
                             <i data-lucide="check-circle" class="w-6 h-6"></i>
                         </div>
                     </div>
@@ -269,9 +190,9 @@
                 <!-- Charts & Analytics Section -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <!-- Resource Chart -->
-                    <div class="lg:col-span-2 bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col gap-4 shadow-lg">
-                        <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
-                            <i data-lucide="bar-chart-2" class="w-4 h-4 text-skyBlue"></i>
+                    <div class="lg:col-span-2 bg-white border border-borderClr p-6 rounded-3xl flex flex-col gap-4 shadow-sm">
+                        <h3 class="text-base font-bold text-textDark flex items-center gap-2">
+                            <i data-lucide="bar-chart-2" class="w-4 h-4 text-brandPrimary"></i>
                             <span>Solar vs Wind Resource Profile</span>
                         </h3>
                         <div class="relative w-full h-80">
@@ -279,38 +200,38 @@
                         </div>
                     </div>
                     <!-- Platform Metrics -->
-                    <div class="bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col justify-between gap-6 shadow-lg">
+                    <div class="bg-white border border-borderClr p-6 rounded-3xl flex flex-col justify-between gap-6 shadow-sm">
                         <div class="flex flex-col gap-4">
-                            <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
-                                <i data-lucide="info" class="w-4 h-4 text-skyBlue"></i>
+                            <h3 class="text-base font-bold text-textDark flex items-center gap-2">
+                                <i data-lucide="info" class="w-4 h-4 text-brandPrimary"></i>
                                 <span>Platform Metrics</span>
                             </h3>
                             <div class="flex flex-col gap-3">
-                                <div class="flex justify-between py-2.5 border-b border-borderClr/50 text-sm">
-                                    <span class="text-textMuted">Average Solar Irradiance</span>
-                                    <span id="metric-avg-solar" class="font-bold text-textWhite">0 kWh/m²</span>
+                                <div class="flex justify-between py-3 border-b border-borderClr text-sm">
+                                    <span class="text-textGray">Average Solar Irradiance</span>
+                                    <span id="metric-avg-solar" class="font-bold text-textDark">0 kWh/m²</span>
                                 </div>
-                                <div class="flex justify-between py-2.5 border-b border-borderClr/50 text-sm">
-                                    <span class="text-textMuted">Average Wind Speed</span>
-                                    <span id="metric-avg-wind" class="font-bold text-textWhite">0 m/s</span>
+                                <div class="flex justify-between py-3 border-b border-borderClr text-sm">
+                                    <span class="text-textGray">Average Wind Speed</span>
+                                    <span id="metric-avg-wind" class="font-bold text-textDark">0 m/s</span>
                                 </div>
-                                <div class="flex justify-between py-2.5 border-b border-borderClr/50 text-sm">
-                                    <span class="text-textMuted">Average Elevation</span>
-                                    <span id="metric-avg-elevation" class="font-bold text-textWhite">0 m</span>
+                                <div class="flex justify-between py-3 border-b border-borderClr text-sm">
+                                    <span class="text-textGray">Average Elevation</span>
+                                    <span id="metric-avg-elevation" class="font-bold text-textDark">0 m</span>
                                 </div>
-                                <div class="flex justify-between py-2.5 text-sm">
-                                    <span class="text-textMuted">Prediction Accuracy</span>
-                                    <span class="font-bold text-successGreen">94.8%</span>
+                                <div class="flex justify-between py-3 text-sm">
+                                    <span class="text-textGray">Prediction Accuracy</span>
+                                    <span class="font-bold text-accentGreen">94.8%</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="p-4 bg-darkBg border border-borderClr rounded-2xl flex flex-col gap-2">
+                        <div class="p-4 bg-panelBg border border-borderClr rounded-2xl flex flex-col gap-2">
                             <span class="text-xs font-semibold text-textMuted">MAP PREVIEW</span>
-                            <div class="h-32 bg-slate-900 rounded-xl flex items-center justify-center border border-borderClr/55 relative overflow-hidden">
-                                <div class="absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px] opacity-25"></div>
+                            <div class="h-32 bg-white rounded-xl flex items-center justify-center border border-borderClr relative overflow-hidden">
+                                <div class="absolute inset-0 bg-[radial-gradient(#2563eb_1px,transparent_1px)] [background-size:16px_16px] opacity-10"></div>
                                 <div class="z-10 flex flex-col items-center gap-1.5">
-                                    <i data-lucide="map" class="w-5 h-5 text-skyBlue animate-bounce"></i>
-                                    <span class="text-xs font-bold text-textWhite">Spatial Grid Active</span>
+                                    <i data-lucide="map" class="w-5 h-5 text-brandPrimary"></i>
+                                    <span class="text-xs font-bold text-textDark">Spatial Grid Active</span>
                                 </div>
                             </div>
                         </div>
@@ -318,132 +239,135 @@
                 </div>
 
                 <!-- Feature Highlights Section -->
-                <section class="flex flex-col gap-6">
+                <section class="flex flex-col gap-8">
                     <div class="text-center max-w-xl mx-auto flex flex-col gap-2">
-                        <h3 class="text-2xl font-bold text-textWhite tracking-tight">Features & Capabilities</h3>
-                        <p class="text-xs text-textMuted">Explore the advanced analysis modules built to evaluate site viability for clean energy installations.</p>
+                        <h3 class="text-3xl font-extrabold text-textDark tracking-tight">Platform Capabilities</h3>
+                        <p class="text-sm text-textMuted">Intelligent sub-systems designed to analyze data and score renewable viability parameters.</p>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-md hover:scale-[1.02] hover:border-solarYellow/30 transition-all duration-300">
+                        <div class="bg-panelBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:shadow-md hover:border-brandPrimary/30 hover:-translate-y-1 transition-all duration-300">
                             <div class="p-3 bg-solarYellow/10 text-solarYellow w-fit rounded-xl border border-solarYellow/20">
                                 <i data-lucide="sun" class="w-5 h-5"></i>
                             </div>
-                            <h4 class="text-sm font-bold text-textWhite">Solar Assessment</h4>
-                            <p class="text-xs text-textMuted leading-relaxed">Assess solar irradiance and photovoltaic potential using point climatology data.</p>
+                            <h4 class="text-base font-bold text-textDark">Solar Assessment</h4>
+                            <p class="text-xs text-textGray leading-relaxed">Assess solar irradiance and photovoltaic potential using point climatology data.</p>
                         </div>
-                        <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-md hover:scale-[1.02] hover:border-skyBlue/30 transition-all duration-300">
-                            <div class="p-3 bg-skyBlue/10 text-skyBlue w-fit rounded-xl border border-skyBlue/20">
+                        <div class="bg-panelBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:shadow-md hover:border-brandPrimary/30 hover:-translate-y-1 transition-all duration-300">
+                            <div class="p-3 bg-brandPrimary/10 text-brandPrimary w-fit rounded-xl border border-brandPrimary/20">
                                 <i data-lucide="wind" class="w-5 h-5"></i>
                             </div>
-                            <h4 class="text-sm font-bold text-textWhite">Wind Assessment</h4>
-                            <p class="text-xs text-textMuted leading-relaxed">Analyze wind speed ranges and estimate turbine capacity factors.</p>
+                            <h4 class="text-base font-bold text-textDark">Wind Assessment</h4>
+                            <p class="text-xs text-textGray leading-relaxed">Analyze wind speed ranges and estimate turbine capacity factors.</p>
                         </div>
-                        <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-md hover:scale-[1.02] hover:border-primaryGreen/30 transition-all duration-300">
-                            <div class="p-3 bg-primaryGreen/10 text-primaryGreen w-fit rounded-xl border border-primaryGreen/20">
+                        <div class="bg-panelBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:shadow-md hover:border-brandPrimary/30 hover:-translate-y-1 transition-all duration-300">
+                            <div class="p-3 bg-accentGreen/10 text-accentGreen w-fit rounded-xl border border-accentGreen/20">
                                 <i data-lucide="mountain" class="w-5 h-5"></i>
                             </div>
-                            <h4 class="text-sm font-bold text-textWhite">Terrain Analysis</h4>
-                            <p class="text-xs text-textMuted leading-relaxed">Evaluate slope, elevation, and terrain constraints for site suitability.</p>
+                            <h4 class="text-base font-bold text-textDark">Terrain Analysis</h4>
+                            <p class="text-xs text-textGray leading-relaxed">Evaluate slope, elevation, and terrain constraints for site suitability.</p>
                         </div>
-                        <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-md hover:scale-[1.02] hover:border-skyBlue/30 transition-all duration-300">
-                            <div class="p-3 bg-skyBlue/10 text-skyBlue w-fit rounded-xl border border-skyBlue/20">
+                        <div class="bg-panelBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:shadow-md hover:border-brandPrimary/30 hover:-translate-y-1 transition-all duration-300">
+                            <div class="p-3 bg-brandPrimary/10 text-brandPrimary w-fit rounded-xl border border-brandPrimary/20">
                                 <i data-lucide="link" class="w-5 h-5"></i>
                             </div>
-                            <h4 class="text-sm font-bold text-textWhite">Infrastructure Analysis</h4>
-                            <p class="text-xs text-textMuted leading-relaxed">Evaluate grid connectivity and road proximity for cost optimization.</p>
+                            <h4 class="text-base font-bold text-textDark">Infrastructure Analysis</h4>
+                            <p class="text-xs text-textGray leading-relaxed">Evaluate grid connectivity and road proximity for cost optimization.</p>
                         </div>
-                        <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-md hover:scale-[1.02] hover:border-primaryGreen/30 transition-all duration-300">
-                            <div class="p-3 bg-primaryGreen/10 text-primaryGreen w-fit rounded-xl border border-primaryGreen/20">
+                        <div class="bg-panelBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:shadow-md hover:border-brandPrimary/30 hover:-translate-y-1 transition-all duration-300">
+                            <div class="p-3 bg-accentGreen/10 text-accentGreen w-fit rounded-xl border border-accentGreen/20">
                                 <i data-lucide="shield" class="w-5 h-5"></i>
                             </div>
-                            <h4 class="text-sm font-bold text-textWhite">Environmental Assessment</h4>
-                            <p class="text-xs text-textMuted leading-relaxed">Assess environmental risk factors and proximity to protected conservation areas.</p>
+                            <h4 class="text-base font-bold text-textDark">Environmental Analysis</h4>
+                            <p class="text-xs text-textGray leading-relaxed">Assess environmental risk factors and proximity to protected conservation areas.</p>
                         </div>
-                        <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-md hover:scale-[1.02] hover:border-solarYellow/30 transition-all duration-300">
+                        <div class="bg-panelBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:shadow-md hover:border-brandPrimary/30 hover:-translate-y-1 transition-all duration-300">
                             <div class="p-3 bg-solarYellow/10 text-solarYellow w-fit rounded-xl border border-solarYellow/20">
                                 <i data-lucide="coins" class="w-5 h-5"></i>
                             </div>
-                            <h4 class="text-sm font-bold text-textWhite">Economic Feasibility</h4>
-                            <p class="text-xs text-textMuted leading-relaxed">Estimate land cost and grid connection expenses for financial planning.</p>
+                            <h4 class="text-base font-bold text-textDark">Economic Analysis</h4>
+                            <p class="text-xs text-textGray leading-relaxed">Estimate land cost and grid connection expenses for financial planning.</p>
                         </div>
-                        <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-md hover:scale-[1.02] hover:border-skyBlue/30 transition-all duration-300">
-                            <div class="p-3 bg-skyBlue/10 text-skyBlue w-fit rounded-xl border border-skyBlue/20">
+                        <div class="bg-panelBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:shadow-md hover:border-brandPrimary/30 hover:-translate-y-1 transition-all duration-300">
+                            <div class="p-3 bg-brandPrimary/10 text-brandPrimary w-fit rounded-xl border border-brandPrimary/20">
                                 <i data-lucide="list-ordered" class="w-5 h-5"></i>
                             </div>
-                            <h4 class="text-sm font-bold text-textWhite">Site Ranking</h4>
-                            <p class="text-xs text-textMuted leading-relaxed">Rank candidate sites dynamically using multi-criteria weighted scoring.</p>
+                            <h4 class="text-base font-bold text-textDark">Site Ranking</h4>
+                            <p class="text-xs text-textGray leading-relaxed">Rank candidate sites dynamically using multi-criteria weighted scoring.</p>
                         </div>
-                        <div class="bg-cardBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-md hover:scale-[1.02] hover:border-primaryGreen/30 transition-all duration-300">
-                            <div class="p-3 bg-primaryGreen/10 text-primaryGreen w-fit rounded-xl border border-primaryGreen/20">
+                        <div class="bg-panelBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:shadow-md hover:border-brandPrimary/30 hover:-translate-y-1 transition-all duration-300">
+                            <div class="p-3 bg-accentGreen/10 text-accentGreen w-fit rounded-xl border border-accentGreen/20">
                                 <i data-lucide="gauge" class="w-5 h-5"></i>
                             </div>
-                            <h4 class="text-sm font-bold text-textWhite">Energy Estimation</h4>
-                            <p class="text-xs text-textMuted leading-relaxed">Predict annual energy yield for Solar, Wind, and Hybrid configurations.</p>
+                            <h4 class="text-base font-bold text-textDark">Energy Estimation</h4>
+                            <p class="text-xs text-textGray leading-relaxed">Predict annual energy yield for Solar, Wind, and Hybrid configurations.</p>
                         </div>
                     </div>
                 </section>
 
                 <!-- About Solar & Wind Section -->
-                <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- About Solar -->
-                    <div class="bg-cardBg border border-borderClr p-8 rounded-3xl flex flex-col justify-between gap-6 shadow-lg">
-                        <div class="flex flex-col gap-4">
-                            <div class="flex items-center gap-3">
-                                <div class="p-3 bg-solarYellow/10 text-solarYellow rounded-xl border border-solarYellow/20">
-                                    <i data-lucide="sun" class="w-6 h-6"></i>
-                                </div>
-                                <h3 class="text-xl font-bold text-textWhite">About Solar Energy</h3>
-                            </div>
-                            <p class="text-sm text-textMuted leading-relaxed">
-                                Solar energy converts sunlight into electricity using photovoltaic (PV) technology. The process leverages semiconductor materials to capture photon energy, liberating electrons to flow as clean electric current.
+                <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 border-t border-borderClr pt-12">
+                    <!-- About Solar Card -->
+                    <div class="bg-white border border-borderClr rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+                        <div class="h-56 overflow-hidden">
+                            <img src="/static/images/solar_panels_close.png" alt="Solar Farm Close-up" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6 flex flex-col gap-4">
+                            <h4 class="text-2xl font-bold text-textDark flex items-center gap-2">
+                                <i data-lucide="sun" class="w-5 h-5 text-solarYellow"></i>
+                                <span>Solar Energy</span>
+                            </h4>
+                            <p class="text-sm text-textGray leading-relaxed">
+                                Solar energy converts sunlight into electricity using photovoltaic technology. The process leverages semiconductor materials to capture photon energy, liberating electrons to flow as clean electric current.
                             </p>
                             <div class="flex flex-col gap-2 mt-2">
-                                <div class="flex items-center gap-2 text-xs text-textWhite">
-                                    <i data-lucide="check" class="w-4 h-4 text-primaryGreen"></i>
+                                <div class="flex items-center gap-2 text-xs font-semibold text-textGray">
+                                    <i data-lucide="check" class="w-4 h-4 text-accentGreen"></i>
                                     <span>Clean & Sustainable resource potential</span>
                                 </div>
-                                <div class="flex items-center gap-2 text-xs text-textWhite">
-                                    <i data-lucide="check" class="w-4 h-4 text-primaryGreen"></i>
+                                <div class="flex items-center gap-2 text-xs font-semibold text-textGray">
+                                    <i data-lucide="check" class="w-4 h-4 text-accentGreen"></i>
                                     <span>Renewable energy availability globally</span>
                                 </div>
-                                <div class="flex items-center gap-2 text-xs text-textWhite">
-                                    <i data-lucide="check" class="w-4 h-4 text-primaryGreen"></i>
+                                <div class="flex items-center gap-2 text-xs font-semibold text-textGray">
+                                    <i data-lucide="check" class="w-4 h-4 text-accentGreen"></i>
                                     <span>Low maintenance with zero operational emissions</span>
                                 </div>
-                                <div class="flex items-center gap-2 text-xs text-textWhite">
-                                    <i data-lucide="check" class="w-4 h-4 text-primaryGreen"></i>
+                                <div class="flex items-center gap-2 text-xs font-semibold text-textGray">
+                                    <i data-lucide="check" class="w-4 h-4 text-accentGreen"></i>
                                     <span>High scalability from residential to utility scale</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- About Wind -->
-                    <div class="bg-cardBg border border-borderClr p-8 rounded-3xl flex flex-col justify-between gap-6 shadow-lg">
-                        <div class="flex flex-col gap-4">
-                            <div class="flex items-center gap-3">
-                                <div class="p-3 bg-skyBlue/10 text-skyBlue rounded-xl border border-skyBlue/20">
-                                    <i data-lucide="wind" class="w-6 h-6"></i>
-                                </div>
-                                <h3 class="text-xl font-bold text-textWhite">About Wind Energy</h3>
-                            </div>
-                            <p class="text-sm text-textMuted leading-relaxed">
+
+                    <!-- About Wind Card -->
+                    <div class="bg-white border border-borderClr rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
+                        <div class="h-56 overflow-hidden">
+                            <img src="/static/images/wind_turbines_close.png" alt="Wind Turbines Close-up" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6 flex flex-col gap-4">
+                            <h4 class="text-2xl font-bold text-textDark flex items-center gap-2">
+                                <i data-lucide="wind" class="w-5 h-5 text-brandPrimary"></i>
+                                <span>Wind Energy</span>
+                            </h4>
+                            <p class="text-sm text-textGray leading-relaxed">
                                 Wind energy converts the kinetic energy of air currents into mechanical power and electricity through rotating turbine blades, capturing massive volumes of sustainable atmospheric output.
                             </p>
                             <div class="flex flex-col gap-2 mt-2">
-                                <div class="flex items-center gap-2 text-xs text-textWhite">
-                                    <i data-lucide="check" class="w-4 h-4 text-primaryGreen"></i>
+                                <div class="flex items-center gap-2 text-xs font-semibold text-textGray">
+                                    <i data-lucide="check" class="w-4 h-4 text-accentGreen"></i>
                                     <span>Cost effective utility generation scale</span>
                                 </div>
-                                <div class="flex items-center gap-2 text-xs text-textWhite">
-                                    <i data-lucide="check" class="w-4 h-4 text-primaryGreen"></i>
+                                <div class="flex items-center gap-2 text-xs font-semibold text-textGray">
+                                    <i data-lucide="check" class="w-4 h-4 text-accentGreen"></i>
                                     <span>100% renewable and clean source</span>
                                 </div>
-                                <div class="flex items-center gap-2 text-xs text-textWhite">
-                                    <i data-lucide="check" class="w-4 h-4 text-primaryGreen"></i>
+                                <div class="flex items-center gap-2 text-xs font-semibold text-textGray">
+                                    <i data-lucide="check" class="w-4 h-4 text-accentGreen"></i>
                                     <span>Extremely low lifecycle carbon footprints</span>
                                 </div>
-                                <div class="flex items-center gap-2 text-xs text-textWhite">
-                                    <i data-lucide="check" class="w-4 h-4 text-primaryGreen"></i>
+                                <div class="flex items-center gap-2 text-xs font-semibold text-textGray">
+                                    <i data-lucide="check" class="w-4 h-4 text-accentGreen"></i>
                                     <span>Ideal for large-scale agricultural co-location</span>
                                 </div>
                             </div>
@@ -451,23 +375,81 @@
                     </div>
                 </section>
 
+                <!-- Project Workflow Section -->
+                <section class="flex flex-col gap-8 border-t border-borderClr pt-12">
+                    <div class="text-center max-w-xl mx-auto flex flex-col gap-2">
+                        <h3 class="text-3xl font-extrabold text-textDark tracking-tight">Project Workflow</h3>
+                        <p class="text-sm text-textMuted">The standard end-to-end spatial pipeline integrated within our service layer.</p>
+                    </div>
+                    <div class="flex flex-col lg:flex-row items-center justify-between gap-6 px-4 py-8 bg-panelBg border border-borderClr rounded-3xl">
+                        <div class="flex flex-col items-center gap-2 text-center w-full max-w-[120px]">
+                            <div class="p-3 bg-brandPrimary/10 text-brandPrimary rounded-full">
+                                <i data-lucide="map" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-xs font-bold text-textDark">Location Selection</span>
+                        </div>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-textMuted rotate-90 lg:rotate-0"></i>
+                        <div class="flex flex-col items-center gap-2 text-center w-full max-w-[120px]">
+                            <div class="p-3 bg-solarYellow/10 text-solarYellow rounded-full">
+                                <i data-lucide="cloud-lightning" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-xs font-bold text-textDark">NASA POWER API</span>
+                        </div>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-textMuted rotate-90 lg:rotate-0"></i>
+                        <div class="flex flex-col items-center gap-2 text-center w-full max-w-[120px]">
+                            <div class="p-3 bg-accentGreen/10 text-accentGreen rounded-full">
+                                <i data-lucide="cpu" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-xs font-bold text-textDark">Feature Eng.</span>
+                        </div>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-textMuted rotate-90 lg:rotate-0"></i>
+                        <div class="flex flex-col items-center gap-2 text-center w-full max-w-[120px]">
+                            <div class="p-3 bg-brandPrimary/10 text-brandPrimary rounded-full">
+                                <i data-lucide="sliders" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-xs font-bold text-textDark">Scoring Engine</span>
+                        </div>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-textMuted rotate-90 lg:rotate-0"></i>
+                        <div class="flex flex-col items-center gap-2 text-center w-full max-w-[120px]">
+                            <div class="p-3 bg-solarYellow/10 text-solarYellow rounded-full">
+                                <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-xs font-bold text-textDark">Site Ranking</span>
+                        </div>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-textMuted rotate-90 lg:rotate-0"></i>
+                        <div class="flex flex-col items-center gap-2 text-center w-full max-w-[120px]">
+                            <div class="p-3 bg-accentGreen/10 text-accentGreen rounded-full">
+                                <i data-lucide="navigation" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-xs font-bold text-textDark">Deployment Strat.</span>
+                        </div>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-textMuted rotate-90 lg:rotate-0"></i>
+                        <div class="flex flex-col items-center gap-2 text-center w-full max-w-[120px]">
+                            <div class="p-3 bg-brandPrimary/10 text-brandPrimary rounded-full">
+                                <i data-lucide="gauge" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-xs font-bold text-textDark">Energy Estimation</span>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Motivational Section -->
-                <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="bg-cardBg/40 border border-borderClr/60 p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:border-skyBlue/25 transition-all duration-300">
-                        <i data-lucide="leaf" class="w-5 h-5 text-primaryGreen"></i>
-                        <p class="text-xs italic text-textWhite">"The future belongs to clean energy."</p>
+                <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 border-t border-borderClr pt-12">
+                    <div class="bg-panelBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:border-brandPrimary/20 transition-all duration-300">
+                        <i data-lucide="leaf" class="w-5 h-5 text-accentGreen"></i>
+                        <p class="text-sm font-semibold text-textDark">"Clean Energy. Cleaner Future."</p>
                     </div>
-                    <div class="bg-cardBg/40 border border-borderClr/60 p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:border-skyBlue/25 transition-all duration-300">
-                        <i data-lucide="sun" class="w-5 h-5 text-solarYellow"></i>
-                        <p class="text-xs italic text-textWhite">"Every watt generated sustainably builds a greener tomorrow."</p>
+                    <div class="bg-panelBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:border-brandPrimary/20 transition-all duration-300">
+                        <i data-lucide="shield" class="w-5 h-5 text-solarYellow"></i>
+                        <p class="text-sm font-semibold text-textDark">"Building Tomorrow with Renewable Intelligence."</p>
                     </div>
-                    <div class="bg-cardBg/40 border border-borderClr/60 p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:border-skyBlue/25 transition-all duration-300">
-                        <i data-lucide="database" class="w-5 h-5 text-skyBlue"></i>
-                        <p class="text-xs italic text-textWhite">"Intelligent renewable deployment begins with intelligent data."</p>
+                    <div class="bg-panelBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:border-brandPrimary/20 transition-all duration-300">
+                        <i data-lucide="zap" class="w-5 h-5 text-brandPrimary"></i>
+                        <p class="text-sm font-semibold text-textDark">"Every Site Matters. Every Watt Counts."</p>
                     </div>
-                    <div class="bg-cardBg/40 border border-borderClr/60 p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:border-skyBlue/25 transition-all duration-300">
-                        <i data-lucide="trending-up" class="w-5 h-5 text-primaryGreen"></i>
-                        <p class="text-xs italic text-textWhite">"Turning geographical intelligence into sustainable energy."</p>
+                    <div class="bg-panelBg border border-borderClr p-6 rounded-2xl flex flex-col gap-3 shadow-sm hover:border-brandPrimary/20 transition-all duration-300">
+                        <i data-lucide="database" class="w-5 h-5 text-accentGreen"></i>
+                        <p class="text-sm font-semibold text-textDark">"Data-Driven Decisions for Sustainable Power."</p>
                     </div>
                 </section>
             </div>
@@ -475,8 +457,8 @@
             <!-- TAB 2: PROJECTS & SITES -->
             <div id="tab-projects-sites" class="tab-content hidden flex flex-col gap-8">
                 <!-- Projects List -->
-                <div class="bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col gap-4">
-                    <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
+                <div class="bg-white border border-borderClr p-6 rounded-3xl flex flex-col gap-4 shadow-sm">
+                    <h3 class="text-base font-bold text-textDark flex items-center gap-2">
                         <i data-lucide="folder" class="w-4 h-4 text-solarYellow"></i>
                         <span>Renewable Energy Projects</span>
                     </h3>
@@ -497,9 +479,9 @@
                 </div>
 
                 <!-- Sites List -->
-                <div class="bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col gap-4">
-                    <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
-                        <i data-lucide="navigation" class="w-4 h-4 text-skyBlue"></i>
+                <div class="bg-white border border-borderClr p-6 rounded-3xl flex flex-col gap-4 shadow-sm">
+                    <h3 class="text-base font-bold text-textDark flex items-center gap-2">
+                        <i data-lucide="navigation" class="w-4 h-4 text-brandPrimary"></i>
                         <span>Registered Coordinate Sites</span>
                     </h3>
                     <div class="overflow-x-auto">
@@ -522,9 +504,9 @@
             <!-- TAB 3: SITE FEATURES -->
             <div id="tab-features" class="tab-content hidden flex flex-col lg:flex-row gap-8">
                 <!-- Left: Features Table -->
-                <div class="flex-1 bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col gap-4">
-                    <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
-                        <i data-lucide="map-pin" class="w-4 h-4 text-primaryGreen"></i>
+                <div class="flex-1 bg-white border border-borderClr p-6 rounded-3xl flex flex-col gap-4 shadow-sm">
+                    <h3 class="text-base font-bold text-textDark flex items-center gap-2">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-accentGreen"></i>
                         <span>Geographical Feature Records</span>
                     </h3>
                     <div class="overflow-x-auto">
@@ -549,10 +531,10 @@
                 </div>
 
                 <!-- Right: Create Form (Conditional container) -->
-                <div id="form-container" class="w-full lg:w-96 bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col gap-5">
+                <div id="form-container" class="w-full lg:w-96 bg-white border border-borderClr p-6 rounded-3xl flex flex-col gap-5 shadow-sm">
                     <div>
-                        <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
-                            <i data-lucide="plus-circle" class="w-4 h-4 text-primaryGreen"></i>
+                        <h3 class="text-base font-bold text-textDark flex items-center gap-2">
+                            <i data-lucide="plus-circle" class="w-4 h-4 text-accentGreen"></i>
                             <span>Register New Site features</span>
                         </h3>
                         <p class="text-xs text-textMuted leading-relaxed mt-1">
@@ -570,45 +552,45 @@
                     <form id="feature-form" onsubmit="submitFeature(event)" class="flex flex-col gap-4">
                         <div class="grid grid-cols-2 gap-4">
                             <div class="flex flex-col gap-1">
-                                <label class="text-xs font-semibold text-textMuted">Latitude</label>
-                                <input type="number" step="any" id="input-latitude" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                                <label class="text-xs font-semibold text-textGray">Latitude</label>
+                                <input type="number" step="any" id="input-latitude" required class="bg-panelBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandPrimary transition-all">
                             </div>
                             <div class="flex flex-col gap-1">
-                                <label class="text-xs font-semibold text-textMuted">Longitude</label>
-                                <input type="number" step="any" id="input-longitude" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                                <label class="text-xs font-semibold text-textGray">Longitude</label>
+                                <input type="number" step="any" id="input-longitude" required class="bg-panelBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandPrimary transition-all">
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="flex flex-col gap-1">
-                                <label class="text-xs font-semibold text-textMuted">Solar Irradiance</label>
-                                <input type="number" step="any" id="input-solar" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                                <label class="text-xs font-semibold text-textGray">Solar Irradiance</label>
+                                <input type="number" step="any" id="input-solar" required class="bg-panelBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandPrimary transition-all">
                             </div>
                             <div class="flex flex-col gap-1">
-                                <label class="text-xs font-semibold text-textMuted">Wind Speed</label>
-                                <input type="number" step="any" id="input-wind" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                                <label class="text-xs font-semibold text-textGray">Wind Speed</label>
+                                <input type="number" step="any" id="input-wind" required class="bg-panelBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandPrimary transition-all">
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="flex flex-col gap-1">
-                                <label class="text-xs font-semibold text-textMuted">Temperature</label>
-                                <input type="number" step="any" id="input-temp" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                                <label class="text-xs font-semibold text-textGray">Temperature</label>
+                                <input type="number" step="any" id="input-temp" required class="bg-panelBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandPrimary transition-all">
                             </div>
                             <div class="flex flex-col gap-1">
-                                <label class="text-xs font-semibold text-textMuted">Humidity</label>
-                                <input type="number" step="any" id="input-humidity" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                                <label class="text-xs font-semibold text-textGray">Humidity</label>
+                                <input type="number" step="any" id="input-humidity" required class="bg-panelBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandPrimary transition-all">
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="flex flex-col gap-1">
-                                <label class="text-xs font-semibold text-textMuted">Elevation</label>
-                                <input type="number" step="any" id="input-elevation" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                                <label class="text-xs font-semibold text-textGray">Elevation</label>
+                                <input type="number" step="any" id="input-elevation" required class="bg-panelBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandPrimary transition-all">
                             </div>
                             <div class="flex flex-col gap-1">
-                                <label class="text-xs font-semibold text-textMuted">Slope</label>
-                                <input type="number" step="any" id="input-slope" required class="bg-darkBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textWhite focus:outline-none focus:border-primaryGreen transition-all">
+                                <label class="text-xs font-semibold text-textGray">Slope</label>
+                                <input type="number" step="any" id="input-slope" required class="bg-panelBg border border-borderClr rounded-xl px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandPrimary transition-all">
                             </div>
                         </div>
-                        <button type="submit" class="w-full mt-2 py-3 bg-primaryGreen hover:bg-primaryGreen/95 text-darkBg font-extrabold text-sm rounded-xl transition-all duration-200">
+                        <button type="submit" class="w-full mt-2 py-3 bg-brandPrimary hover:bg-brandHover text-white font-extrabold text-sm rounded-xl transition-all duration-200">
                             Save Feature Record
                         </button>
                     </form>
@@ -619,8 +601,8 @@
             <div id="tab-analytics" class="tab-content hidden flex flex-col gap-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Solar Chart -->
-                    <div class="bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col gap-4 shadow-lg">
-                        <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
+                    <div class="bg-white border border-borderClr p-6 rounded-3xl flex flex-col gap-4 shadow-sm">
+                        <h3 class="text-base font-bold text-textDark flex items-center gap-2">
                             <i data-lucide="sun" class="w-4 h-4 text-solarYellow"></i>
                             <span>Solar Potential Chart</span>
                         </h3>
@@ -629,9 +611,9 @@
                         </div>
                     </div>
                     <!-- Wind Chart -->
-                    <div class="bg-cardBg border border-borderClr p-6 rounded-3xl flex flex-col gap-4 shadow-lg">
-                        <h3 class="text-base font-bold text-textWhite flex items-center gap-2">
-                            <i data-lucide="wind" class="w-4 h-4 text-skyBlue"></i>
+                    <div class="bg-white border border-borderClr p-6 rounded-3xl flex flex-col gap-4 shadow-sm">
+                        <h3 class="text-base font-bold text-textDark flex items-center gap-2">
+                            <i data-lucide="wind" class="w-4 h-4 text-brandPrimary"></i>
                             <span>Wind Speed Profile Chart</span>
                         </h3>
                         <div class="relative w-full h-80">
@@ -653,14 +635,14 @@
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
 
             document.querySelectorAll('.sidebar-btn').forEach(btn => {
-                btn.classList.remove('bg-primaryGreen/10', 'border', 'border-primaryGreen/20', 'text-textWhite');
-                btn.classList.add('text-textMuted');
+                btn.classList.remove('bg-brandPrimary/10', 'border', 'border-brandPrimary/20', 'text-brandPrimary', 'font-semibold');
+                btn.classList.add('text-textGray', 'font-medium');
             });
 
             const activeBtn = document.getElementById(`btn-${tabId}`);
             if (activeBtn) {
-                activeBtn.classList.remove('text-textMuted');
-                activeBtn.classList.add('bg-primaryGreen/10', 'border', 'border-primaryGreen/20', 'text-textWhite');
+                activeBtn.classList.remove('text-textGray', 'font-medium');
+                activeBtn.classList.add('bg-brandPrimary/10', 'border', 'border-brandPrimary/20', 'text-brandPrimary', 'font-semibold');
             }
         }
 
@@ -753,8 +735,8 @@
             }
             projects.forEach(p => {
                 body.innerHTML += `
-                    <tr class="border-b border-borderClr/40 hover:bg-cardBg/50 text-textWhite transition-colors">
-                        <td class="py-3.5 px-4 font-medium text-skyBlue">${p.id}</td>
+                    <tr class="border-b border-borderClr/60 hover:bg-panelBg text-textDark transition-colors">
+                        <td class="py-3.5 px-4 font-bold text-brandPrimary">${p.id}</td>
                         <td class="py-3.5 px-4">${p.project_name}</td>
                         <td class="py-3.5 px-4">${p.location}</td>
                     </tr>
@@ -771,8 +753,8 @@
             }
             sites.forEach(s => {
                 body.innerHTML += `
-                    <tr class="border-b border-borderClr/40 hover:bg-cardBg/50 text-textWhite transition-colors">
-                        <td class="py-3.5 px-4 font-medium text-skyBlue">${s.id}</td>
+                    <tr class="border-b border-borderClr/60 hover:bg-panelBg text-textDark transition-colors">
+                        <td class="py-3.5 px-4 font-bold text-brandPrimary">${s.id}</td>
                         <td class="py-3.5 px-4">${s.latitude}</td>
                         <td class="py-3.5 px-4">${s.longitude}</td>
                     </tr>
@@ -789,11 +771,11 @@
             }
             features.forEach(f => {
                 body.innerHTML += `
-                    <tr class="border-b border-borderClr/40 hover:bg-cardBg/50 text-textWhite transition-colors">
-                        <td class="py-3.5 px-4 font-bold text-primaryGreen">${f.id}</td>
-                        <td class="py-3.5 px-4 text-skyBlue">${f.latitude}, ${f.longitude}</td>
-                        <td class="py-3.5 px-4 font-medium text-solarYellow">${f.solar_irradiance}</td>
-                        <td class="py-3.5 px-4 font-medium text-skyBlue">${f.wind_speed}</td>
+                    <tr class="border-b border-borderClr/60 hover:bg-panelBg text-textDark transition-colors">
+                        <td class="py-3.5 px-4 font-bold text-brandPrimary">${f.id}</td>
+                        <td class="py-3.5 px-4 text-brandPrimary font-medium">${f.latitude}, ${f.longitude}</td>
+                        <td class="py-3.5 px-4 font-bold text-solarYellow">${f.solar_irradiance}</td>
+                        <td class="py-3.5 px-4 font-bold text-brandPrimary">${f.wind_speed}</td>
                         <td class="py-3.5 px-4">${f.temperature}°C</td>
                         <td class="py-3.5 px-4">${f.humidity}%</td>
                         <td class="py-3.5 px-4">${f.elevation}m</td>
@@ -859,9 +841,9 @@
             const solarData = features.map(f => f.solar_irradiance);
             const windData = features.map(f => f.wind_speed);
 
-            // Chart.js Default styling tweaks
-            Chart.defaults.color = '#94A3B8';
-            Chart.defaults.borderColor = '#1E293B';
+            // Chart.js Default Light Theme styling tweaks
+            Chart.defaults.color = '#374151';
+            Chart.defaults.borderColor = '#E2E8F0';
 
             // 1. Dashboard Overview Chart
             if (resourceChartInstance) resourceChartInstance.destroy();
@@ -874,16 +856,16 @@
                         {
                             label: 'Solar Irradiance (kWh/m²)',
                             data: solarData,
-                            backgroundColor: '#FACC15',
-                            borderColor: '#FACC15',
+                            backgroundColor: '#FBBF24',
+                            borderColor: '#FBBF24',
                             borderWidth: 1,
                             borderRadius: 6
                         },
                         {
                             label: 'Wind Speed (m/s)',
                             data: windData,
-                            backgroundColor: '#38BDF8',
-                            borderColor: '#38BDF8',
+                            backgroundColor: '#2563EB',
+                            borderColor: '#2563EB',
                             borderWidth: 1,
                             borderRadius: 6
                         }
@@ -895,16 +877,16 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            grid: { color: '#1E293B' },
-                            ticks: { color: '#94A3B8' }
+                            grid: { color: '#E2E8F0' },
+                            ticks: { color: '#374151' }
                         },
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#94A3B8', maxRotation: 45, minRotation: 45 }
+                            ticks: { color: '#374151', maxRotation: 45, minRotation: 45 }
                         }
                     },
                     plugins: {
-                        legend: { labels: { color: '#FFFFFF' } }
+                        legend: { labels: { color: '#0F172A' } }
                     }
                 }
             });
@@ -919,8 +901,8 @@
                     datasets: [{
                         label: 'Solar Irradiance (kWh/m²)',
                         data: solarData,
-                        borderColor: '#FACC15',
-                        backgroundColor: 'rgba(250, 204, 21, 0.1)',
+                        borderColor: '#FBBF24',
+                        backgroundColor: 'rgba(251, 191, 36, 0.1)',
                         fill: true,
                         tension: 0.3
                     }]
@@ -931,16 +913,16 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            grid: { color: '#1E293B' },
-                            ticks: { color: '#94A3B8' }
+                            grid: { color: '#E2E8F0' },
+                            ticks: { color: '#374151' }
                         },
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#94A3B8', maxRotation: 45, minRotation: 45 }
+                            ticks: { color: '#374151', maxRotation: 45, minRotation: 45 }
                         }
                     },
                     plugins: {
-                        legend: { labels: { color: '#FFFFFF' } }
+                        legend: { labels: { color: '#0F172A' } }
                     }
                 }
             });
@@ -955,8 +937,8 @@
                     datasets: [{
                         label: 'Wind Speed (m/s)',
                         data: windData,
-                        borderColor: '#38BDF8',
-                        backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                        borderColor: '#2563EB',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
                         fill: true,
                         tension: 0.3
                     }]
@@ -967,16 +949,16 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            grid: { color: '#1E293B' },
-                            ticks: { color: '#94A3B8' }
+                            grid: { color: '#E2E8F0' },
+                            ticks: { color: '#374151' }
                         },
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#94A3B8', maxRotation: 45, minRotation: 45 }
+                            ticks: { color: '#374151', maxRotation: 45, minRotation: 45 }
                         }
                     },
                     plugins: {
-                        legend: { labels: { color: '#FFFFFF' } }
+                        legend: { labels: { color: '#0F172A' } }
                     }
                 }
             });
